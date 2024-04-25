@@ -2,8 +2,8 @@
 Victor Mendes Silva Zeferino - 522.
 Felipe Mendes Silva Zeferino - 511
 Gustavo Delfino Ribeiro       - 292    .    */
-
 #include <iostream>
+#include<list>
 using namespace std;
 
 struct pokemon
@@ -14,12 +14,17 @@ struct pokemon
     int posX, posY;
 };
 
+struct Adjacencia {
+int origem;
+int destino;
+int custo;
+};
 struct cidade
 {
     unsigned int id; // unsigned int, já que um ID nao deve ser negativo
     string nome;
     bool centro;
-
+    list<Adjacencia> adj;
     // adicionar lista de adjacencia aqui?
 };
 bool centro_valido(int centrobool, bool centro)
@@ -27,7 +32,7 @@ bool centro_valido(int centrobool, bool centro)
 
     while (centrobool != 0 | centrobool != 1)
     {
-        cout << "valor para o centro errado, digite 0 se tiver centro e 1 se nao houver";
+        cout << "valor inválido, digite 0 se houver centro e 1 se nao houver";
         cin >> centrobool;
     }
     if (centrobool == 0)
