@@ -4,8 +4,10 @@ Felipe Mendes Silva Zeferino - 511
 Gustavo Delfino Ribeiro       - 292    .    */
 #include <iostream>
 #include <list>
+
 using namespace std;
 
+#define INT_MAX 99999;
 struct pokemon {
   string nome;
   string tipo;
@@ -44,19 +46,50 @@ void mostrar_cidade(cidade cidade) {
 void cria_aresta(cidade cidades[], int u, int v, int custo) {
   Adjacencia aux;
 
-  aux.origem = cidades[u];   // Define the origin city
-  aux.destino = cidades[v];  // Define the destination city
-  aux.custo = custo;         // Define the cost of the edge
+  aux.origem = cidades[u]; 
+  aux.destino = cidades[v];  
+  aux.custo = custo;         
   cidades[u].adj.push_back(
-      aux);  // Add the edge to the adjacency list of city u
+      aux);  
 
-  // If the graph is undirected, create an edge in the opposite direction as
-  // well
   aux.origem = cidades[v];
   aux.destino = cidades[u];
   cidades[v].adj.push_back(aux);
 }
 
+int shortest_path_dijkstra(cidade cidades[], int numCidades, int start, int end){
+	bool intree[numCidades];
+	int distance[numCidades], parent[numCidades];
+	
+	for(int u = 0; u < numCidades; u++){
+        intree[u] = false;
+        distance[u] = INT_MAX;
+        parent[u] = -1;
+	}
+    distance[start] = 0;
+    int v = start;
+    while(intree[v] == false){
+        intree[v] = true;
+		list<Adjacencia>::iterator p;
+    	for(p = cidades[v].adj.begin(); p != cidades[v].adj.end(); p++){
+            int dest = p->destino.id;
+            int weight = p->custo;
+            if(distance[dest] > distance[v]+weight){
+                distance[dest] = distance[v]+weight;
+                parent[dest] = v;
+			}
+		}
+        v = 0;
+        int dist = INT_MAX;
+        for(int u = 0; u < numCidades; u++){
+            if(intree[u]==false && dist>distance[u]){
+                dist = distance[u];
+                v = u;
+			}
+		}
+	}
+	return distance[end];
+}
 void cadastroCidades(cidade cidades[]) {
   cout << "Entre com a adjacência: " << endl;
   int aux1, aux2;
@@ -75,10 +108,9 @@ void cadastroCidades(cidade cidades[]) {
 // fazer um djiktra calculando qual a cidade mais próxima com centro pokemon
 // calcular para todas as cidades com centro pokemon e retornar a mais próxima
 
-
 //for (int i = 0; i < ){
 // if(cidades[i].id != atual && cidades[i].centrobool)
-// dijkstra(atual, i);
+// dijkstra(atual, i); função que retorna a distância da cidade mais próxima
 // }
 
 int main() {
