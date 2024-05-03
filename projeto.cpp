@@ -8,7 +8,7 @@ Gustavo Delfino Ribeiro       - 292    .    */
 /*
 DONE  1. inserir cidades, incluindo o código e o nome da cidade e se existe um centro pokémon na cidade ou não, além de uma lista de códigos das cidades adjacentes a ela;
 DOING - Gustavo 2. informar qual a rota deve ser tomada para chegar no centro pokémon mais próximo, dado o código da cidade atual da Pokédex;
-DOING - Felipe  3. inserir pokémons incluindo seu nome, seu tipo, seu número e sua localização (x,y) no mapa;
+DONE - Felipe  3. inserir pokémons incluindo seu nome, seu tipo, seu número e sua localização (x,y) no mapa;
 4. imprimir todas essas informações em ordem crescente dos nomes;
 5. verificar se um pokémon existe pelo seu nome (se sim, imprimir “Pokémon
 encontrado!”, se não “Pokémon não encontrado!”);
@@ -54,9 +54,9 @@ void mostrar_pokemon(pokemon pokemon) {
        << "Posicao: " << pokemon.posX << pokemon.posY << endl;
 }
 
-void cria_no(treenode *&p, pokemon pokemon) { //p recebe o endereço da raiz
+void cria_no(treenode *&p, pokemon pokemon) { //Insere o pokemon na BST
 if(p == NULL){
-	p = new treenode; //cria um novo nó
+	p = new treenode;
 	p->info.id = pokemon.id;
   p->info.nome = pokemon.nome;
   p->info.posX = pokemon.posX;
@@ -73,14 +73,14 @@ else
 }
 
 void mostrar_cidade(cidade cidade) {
-  cout << "Cidade Registrada:" << endl;
+  cout << "Cidade Registrada: " << endl;
   cout << "nome: " << cidade.nome << endl;
   cout << "Tem centro?: " << cidade.centro << endl;
   cout << "ID: " << cidade.id << endl;
 }
 
 
-void cria_aresta(cidade cidades[], int u, int v, int custo) { //para cidades
+void cria_aresta(cidade cidades[], int u, int v, int custo) { //cria cidades
   Adjacencia aux;
 
   aux.origem = cidades[u]; 
@@ -177,9 +177,11 @@ int main() {
     cadastroCidades(cidades);
   }
 
+
+  //TODO: definir o que realmente vai ser mostrado aqui
   // impressao dos dados do pokemon.
   mostrar_pokemon(pokemon);
-  // impressao dos dados da cidade;
+  // impressao dos dados da cidade na posição 0;
   mostrar_cidade(cidades[0]);
   return 0;
 }
