@@ -9,7 +9,7 @@ Gustavo Delfino Ribeiro       - 292    .    */
 DONE  1. inserir cidades, incluindo o código e o nome da cidade e se existe um centro pokémon na cidade ou não, além de uma lista de códigos das cidades adjacentes a ela;
 DOING - Gustavo 2. informar qual a rota deve ser tomada para chegar no centro pokémon mais próximo, dado o código da cidade atual da Pokédex;
 DONE - Felipe  3. inserir pokémons incluindo seu nome, seu tipo, seu número e sua localização (x,y) no mapa;
-4. imprimir todas essas informações em ordem crescente dos nomes;
+4. imprimir todas essas informações em ordem crescente dos nomes; (Ordem alfabética)
 5. verificar se um pokémon existe pelo seu nome (se sim, imprimir “Pokémon
 encontrado!”, se não “Pokémon não encontrado!”);
 6. ordenar e imprimir os pokémons por ordem alfabética dos tipos;
@@ -52,6 +52,19 @@ void mostrar_pokemon(pokemon pokemon) {
        << "Tipo: " << pokemon.tipo << endl
        << "ID: " << pokemon.id << endl
        << "Posicao: " << pokemon.posX << pokemon.posY << endl;
+}
+
+int procura_pokemon(treenode * & p, int id) {//possivelmente retornar o pokemon ao inves de se achou ou não
+  if (p == NULL) {
+    return 0;
+  }
+  else if (p -> info.id == id) {
+  return 1;
+} else if (p -> info.id < id) {
+  procura_pokemon(p -> left, id);
+} else {
+  procura_pokemon(p -> right, id);
+}
 }
 
 void cria_no(treenode *&p, pokemon pokemon) { //Insere o pokemon na BST
