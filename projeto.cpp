@@ -19,7 +19,7 @@ encontrado!”, se não “Pokémon não encontrado!”);
 
 using namespace std;
 
-#define INT_MAX 99999;
+// #define INT_MAX 99999;
 struct pokemon {
   string nome;
   string tipo;
@@ -27,12 +27,7 @@ struct pokemon {
   int posX, posY;
 };
 
-struct Adjacencia {
-  cidade origem;
-  cidade destino;
-  int custo;
-};
-
+struct Adjacencia;
 //Inserção de elementos em uma BST
 struct treenode {
 pokemon info;
@@ -44,6 +39,11 @@ struct cidade {
   string nome;
   bool centro;
   list<Adjacencia> adj;
+};
+struct Adjacencia {
+  cidade origem;
+  cidade destino;
+  int custo;
 };
 // funcoes para imprimir os valores das structs pokemon e cidade
 void mostrar_pokemon(pokemon pokemon) {
