@@ -5,13 +5,25 @@ Gustavo Delfino Ribeiro       - 292    .    */
 #include <iostream>
 #include <list>
 
+/*
+DONE  1. inserir cidades, incluindo o código e o nome da cidade e se existe um centro pokémon na cidade ou não, além de uma lista de códigos das cidades adjacentes a ela;
+DOING - Gustavo 2. informar qual a rota deve ser tomada para chegar no centro pokémon mais próximo, dado o código da cidade atual da Pokédex;
+DONE - Felipe  3. inserir pokémons incluindo seu nome, seu tipo, seu número e sua localização (x,y) no mapa;
+4. imprimir todas essas informações em ordem crescente dos nomes; (Ordem alfabética)
+5. verificar se um pokémon existe pelo seu nome (se sim, imprimir “Pokémon
+encontrado!”, se não “Pokémon não encontrado!”);
+6. ordenar e imprimir os pokémons por ordem alfabética dos tipos;
+7. contar quantos pokémons tem de determinado tipo;
+8. mostrar quantos pokémons podem ser encontrados em um raio de 100 metros, dada a localização atual (x,y) da Pokédex.
+*/
+
 using namespace std;
 
 #define INT_MAX 99999;
 struct pokemon {
   string nome;
   string tipo;
-  unsigned int id;  // unsigned int, já que um ID nao deve ser negativo
+  unsigned int id;
   int posX, posY;
 };
 
@@ -20,12 +32,18 @@ struct Adjacencia {
   cidade destino;
   int custo;
 };
+
+//Inserção de elementos em uma BST
+struct treenode {
+pokemon info;
+treenode * left;
+treenode * right;
+};
 struct cidade {
-  unsigned int id;  // unsigned int, já que um ID nao deve ser negativo
+  unsigned int id;
   string nome;
   bool centro;
   list<Adjacencia> adj;
-  // adicionar lista de adjacencia aqui?
 };
 // funcoes para imprimir os valores das structs pokemon e cidade
 void mostrar_pokemon(pokemon pokemon) {
@@ -36,22 +54,52 @@ void mostrar_pokemon(pokemon pokemon) {
        << "Posicao: " << pokemon.posX << pokemon.posY << endl;
 }
 
+int procura_pokemon(treenode * & p, int id) {//possivelmente retornar o pokemon ao inves de se achou ou não
+  if (p == NULL) {
+    return 0;
+  }
+  else if (p -> info.id == id) {
+  return 1;
+} else if (p -> info.id < id) {
+  procura_pokemon(p -> left, id);
+} else {
+  procura_pokemon(p -> right, id);
+}
+}
+
+void cria_no(treenode *&p, pokemon pokemon) { //Insere o pokemon na BST
+if(p == NULL){
+	p = new treenode;
+	p->info.id = pokemon.id;
+  p->info.nome = pokemon.nome;
+  p->info.posX = pokemon.posX;
+  p->info.posY = pokemon.posY;
+  p->info.tipo = pokemon.tipo;
+
+	p->left = NULL;
+	p->right = NULL;
+}
+else if(pokemon.id < p->info.id)
+	cria_no(p->left, pokemon);
+else
+	cria_no(p->right, pokemon);
+}
+
 void mostrar_cidade(cidade cidade) {
-  cout << "Cidade Registrada:" << endl;
+  cout << "Cidade Registrada: " << endl;
   cout << "nome: " << cidade.nome << endl;
   cout << "Tem centro?: " << cidade.centro << endl;
   cout << "ID: " << cidade.id << endl;
 }
 
-void cria_aresta(cidade cidades[], int u, int v, int custo) {
+
+void cria_aresta(cidade cidades[], int u, int v, int custo) { //cria cidades
   Adjacencia aux;
 
   aux.origem = cidades[u]; 
   aux.destino = cidades[v];  
   aux.custo = custo;         
-  cidades[u].adj.push_back(
-      aux);  
-
+  cidades[u].adj.push_back(aux);  
   aux.origem = cidades[v];
   aux.destino = cidades[u];
   cidades[v].adj.push_back(aux);
@@ -105,27 +153,30 @@ void cadastroCidades(cidade cidades[]) {
   }
 }
 
-// fazer um djiktra calculando qual a cidade mais próxima com centro pokemon
-// calcular para todas as cidades com centro pokemon e retornar a mais próxima
-
 //for (int i = 0; i < ){
 // if(cidades[i].id != atual && cidades[i].centrobool)
 // dijkstra(atual, i); função que retorna a distância da cidade mais próxima
 // }
 
 int main() {
-  // for entradas cidades com id = index
 
   bool centrobool;
   pokemon pokemon;
   cidade cidades[100];
-  int numCidades;
+  int numCidades, numPokemons;
+  treenode *p = NULL;
 
   // leitura de dados do pokemon.
+  cout << "Entre com o número de pokemons que vão ser adicionados: " << endl;
+  cin >> numPokemons;
+  for(int i = 0; i < numPokemons; i++)
+  {
   cout << "entre com o nome,tipo e posicao (x e y) do pokemon: " << endl;
   getline(cin, pokemon.nome);
   getline(cin, pokemon.tipo);
   cin >> pokemon.id >> pokemon.posX >> pokemon.posY;
+  cria_no(p,pokemon);
+  }
 
   // leitura dos dados da cidade.
   cout << "Entre com o número de cidades";
@@ -139,9 +190,11 @@ int main() {
     cadastroCidades(cidades);
   }
 
+
+  //TODO: definir o que realmente vai ser mostrado aqui
   // impressao dos dados do pokemon.
   mostrar_pokemon(pokemon);
-  // impressao dos dados da cidade;
+  // impressao dos dados da cidade na posição 0;
   mostrar_cidade(cidades[0]);
   return 0;
 }
